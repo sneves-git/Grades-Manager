@@ -1,0 +1,4 @@
+C:\Users\sofia\AppData\Local\JetBrains\CLion2020.1\cygwin_cmake\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" "/cygdrive/g/Documents/DEI/1oAno/2oSemestre/Projeto PPP/binaryFile"
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /cygdrive/g/Documents/DEI/1oAno/2oSemestre/Projeto PPP/binaryFile/cmake-build-debug

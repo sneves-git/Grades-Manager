@@ -1,0 +1,154 @@
+//
+// Created by sofia on 17/05/2020.
+//
+#include "main.h"
+
+
+//Removes excess of spaces before, between and after words
+void trimSpaces(char* word){
+    int i = 0, j = 0, flag = 0, previousFlag = 1, firstLetter = 0;
+    char trimmedWord[MAXWORDSIZE] = "";
+
+    while(word[i] != '\0'){
+        //Flag = 0 signals space, flag = 1 signals letter
+        if( !isspace(word[i]) ){
+            flag = 1;
+        }else{
+            flag = 0;
+        }
+
+        //If there are spaces before the first word it ignores them
+        if(flag == 1 && firstLetter == 0){
+            firstLetter = 1;
+            trimmedWord[j] = word[i];
+            j = j + 1;
+            i = i + 1;
+        }
+        //If there is more than one space between words then it removes
+        //the excess and leaves just one space
+        else if(previousFlag == 0 && flag == 1){
+            trimmedWord[j] = ' ';
+            j = j + 1;
+
+            trimmedWord[j] = word[i];
+            j = j + 1;
+            i = i + 1;
+        }
+        //If it is not a space it is added to the final string
+        else if(flag == 1){
+            trimmedWord[j] = word[i];
+            j = j + 1;
+            i = i + 1;
+        }
+        //If it is a space we move forward to the next character and ignore it
+        else{
+            i = i + 1;
+        }
+
+        previousFlag = flag;
+    }
+
+    trimmedWord[j] = 0;
+    strcpy(word, trimmedWord);
+}
+//----------------------------------------------------------------------------------
+
+
+//Checks if the names of the students are all letter characters and if they are the size of MAXWORDSIZE
+void checkName(char* name, char* error){
+    //Makes sure the string ends if it is too long
+    if(strlen(name) > MAXWORDSIZE-2){
+        sprintf(error, "Students' name is too big, it must be between 1 and %d letters long.", MAXWORDSIZE-1);
+        return;
+    }
+
+    //Removes unwanted spaces
+    trimSpaces(name);
+
+    //Checks the string for non-letter characters
+    for(int i = 0; i < strlen(name); i++){
+        if( isalpha(name[i]) == 0 && name[i] != ' '){
+            strcpy(error, "Students' name has a non-letter character.");
+            return;
+        }
+    }
+}
+//----------------------------------------------------------------------------------
+
+//Checks if the student's number has no errors (if it is not negative, if it is not
+//bigger than expected nor if it has any characters that are non numeric)
+void checkStudentNumber(char* number, char* error){
+    int number1 = 0;
+    //Removes unwanted spaces
+    trimSpaces(number);
+
+    for(int i = 0; number[i] != '\0'; i++){
+        //If the first char is an hyphen then it is a negative number therefore it is
+        //incorrect
+        if(i == 0 && number[i] == '-'){
+            strcpy(error, "Students' number can not be a negative number.");
+            return;
+        }
+
+        //Checks char by char to see if it is a number, if not then it is incorrect
+        if( isdigit(number[i]) == 0){
+            strcpy(error, "Students' number has a non-numeric character.");
+            return;
+        }
+    }
+
+    //Checks if number is bigger than the size of unsigned long int, if it is then it
+    //is not correct
+    errno = 0;
+    number1 = strtoul(number, NULL, 10);
+    if(errno || number1 <= 0){
+        strcpy(error, "Students' number is too big, it must be between 1 and 4,294,967,295 .");
+        return;
+    }
+    return;
+}
+
+
+//----------------------------------------------------------------------------------
+
+//Checks if the classifications of the tests are correct by making sure that it is all
+//numbers, it has just one dot character and that the classification stays within range (0-20)
+void checkTests(char* classification, char* error){
+    int dotCount = 0;
+
+    trimSpaces(classification);
+
+    for(int i = 0; i < classification[i] != '\0'; i++){
+        //If the first char is an hyphen then it is a negative number therefore it is
+        //incorrect
+        if(i == 0 && classification[i] == '-'){
+            strcpy(error, "Students' classification can not be a negative number.");
+            return;
+        }
+
+        //Checks char by char to see if it is a number, if not then it is incorrect
+        if( isdigit(classification[i]) == 0 && classification[i] != '.' && classification[i] != '\0'){
+            strcpy(error, "Students' classification has a non-numeric character.");
+            return;
+        }
+
+        //If there is more than one dot then the number is incorrect
+        if(classification[i] == '.'){
+            dotCount++;
+            if(dotCount > 1){
+                strcpy(error, "Students' classification has more than one dot(.), decimal number can be incorrect.");
+                return;
+            }
+        }
+    }
+
+    //Checks if number is within range and if it is between 0 < number < 20
+    errno = 0;
+    classification[MAXWORDSIZE-1] = '\0';
+    float class = strtof(classification, NULL);
+    if(errno || class < 0 || class > 20){
+        strcpy(error, "Students' classification must be between 0 and 20(included).");
+        return;
+    }
+
+}

@@ -1,0 +1,153 @@
+#include "main.h"
+
+/*      The purpose of this program is to generate two output files, one with the student's classification mean
+ * separated by disciplines in alphabetical order whilst the other has the student's who passed the year, in
+ * alphabetic order. Passing the year equals passing at least 8 disciplines.
+ *      Requirements:
+ *      - The main project needs to receive a binary file as input
+ *      - Circular list(s) with priority(ies) with dynamic memory allocation
+ *      - The output files need to be separated by \n
+ *      - The name of the output files needs to be asked in the command prompt
+ *
+ * Project binaryFile - Creates binary file:
+ *      The program receives two text files, one with the students' name and number  and the other with the
+ *  student's number, discipline, test and classification, each one of these separated by the same separator, ::.
+ *  As example the first would have "name::number"  and  the second "number::discipline::test::classification".
+ *  The name of both text files is asked for the user's input.
+ *      While reading each line of the files, if any incorrect data is found then it is discarded and the errors
+ *  encountered are presented to the user indicating the line in which the error was found. If any information is
+ *  discarded then the final output may be incorrect given the fact that that student may not be now registered in
+ *  10 disciplines total.
+ *
+ *      CONTROLLED BEHAVIOURS:
+ *      - If the user writes a file name that doesn't exist an error message is printed
+ *      - If the student isn't in the name number list it is not added to the final list
+ *      - If the numbers are negative, too large and not within range (0-20 for classifications and 0-4,294,967,295
+ *        for the students' number) then the information is discarded and not added to the final list
+ *      - If the files have less information that expected, e.g. name::text::classification, the information
+ *        is discarded
+ *      - If there is only one test for the same discipline and person then test2 is filled as 0.0 and the mean
+ *        is calculated
+ *      - If there is more than two tests to the same discipline and student the data is ignored
+ *
+ *      INDETERMINATE BEHAVIOURS:
+ *      - If the user decides to use another separator rather than ::
+ *      - If the user gives the wrong .txt files
+ *
+ *
+ * Project main - Creates two text output files:
+ *      The program receives a binary file which name is requested to the user. The binary file has the structures
+ *  previously created in project 'binaryFile', we link its structures and then generate the first output file (the
+ *  final classifications of individual separated by discipline). Then, the finalists structures are created,  which
+ *  contain the names and number of disciplines that were passed by each individual and, to finish, we create the
+ *  second output file where we only insert the names of the students that passed the respective number of subjects
+ *  passed. It is assumed the binary name given in the Project binaryFile is the same as the one used in this program.
+ *
+ *      INDETERMINATE BEHAVIOURS:
+ *      - If the user writes the wrong extension to the name of the output files
+*/
+
+
+
+void saveTxtFileName(char *fileName){
+    FILE* binFile = NULL;
+
+    while (binFile == NULL){
+        printf("\nName of data file: ");
+        if(get_one_line(stdin, fileName, MAXWORDSIZE) == EOF){
+            printf("Ending program... You pressed EOF.");
+            exit(0);
+        }
+
+        binFile = fopen(fileName, "rb");
+        if(binFile == NULL){
+            printf("File does not exist. Try again.\n");
+        }
+    }
+    printf("\n\n");
+}
+
+
+
+// Árvore binária genérica com acesso a ficheiros - João Gabriel Silva 2020-04-26
+/* get next line from input - "lim" includes the terminating zero */
+int get_one_line(FILE * fich, char *linha, int lim) {
+    int c, i;
+    i = 0;
+    while (isspace(c = fgetc(fich)));
+    if (c != EOF) {
+        if (!iscntrl(c)) linha[i++] = c;
+    } else
+        return c;
+
+    for (; i < lim - 1;) {
+        c = fgetc(fich);
+        if (c == EOF)
+            return c;
+        if (c == '\n')
+            break;
+        if (!iscntrl(c)) linha[i++] = c;
+    }
+    linha[i] = 0;
+    while ((c != EOF) && (c != '\n'))
+        c = fgetc(fich);
+    return c;
+}
+
+
+int main(int argc, char *argv[]) {
+    int choice = -1;
+    char binaryName[MAXWORDSIZE] = "binary.bin";
+    char finalClassificationsFileName[MAXWORDSIZE] = "";
+    char finalistsFileName[MAXWORDSIZE] = "";
+
+    if(argc != 3){
+        fprintf(stderr, "Invalid number of arguments. Write name of the first and second output file.\nExiting Program");
+        exit(-1);
+    }
+
+    int i = 1;
+    while (i < argc){
+        printf("Parameter %d: %s\n", i, argv[i]);
+        i++;
+    }
+    printf("\n");
+    strcpy(finalClassificationsFileName, argv[1]);
+    strcpy(finalistsFileName, argv[2]);
+
+
+    //Reads binary file and connects the structures in a circular list
+    readBinary(binaryName);
+
+    //Creates final classifications file
+    createFinalClassificationsFile(finalClassificationsFileName);
+
+    //Creates finalists structure
+    createFinalistsStruct();
+
+    //Creates finalists file
+    createFinalistsFile(finalistsFileName);
+
+    while(1){
+        choice = -1;
+
+        printf("Choose one of the following options:\n\t"
+               "0 - Leave\n\t"
+               "1 - See final classifications list\n\t"
+               "2 - See finalists list\n\t"
+               "Choice: ");
+        scanf("%d", &choice);
+        while (getchar() != '\n');  //clean rest of the line
+        printf("\n");
+
+        if(choice == 0){
+            return 0;
+        }else if(choice == 1){
+            printfFinalClassList();
+        }else if(choice == 2){
+            printFinalistsList();
+        }
+    }
+
+    return 0;
+}

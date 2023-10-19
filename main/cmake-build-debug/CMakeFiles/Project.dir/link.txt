@@ -1,0 +1,1 @@
+/usr/bin/cc -Wall -Wextra -g  -Wl,--enable-auto-import CMakeFiles/Project.dir/main.c.o CMakeFiles/Project.dir/circularLists.c.o  -o Project.exe -Wl,--out-implib,libProject.dll.a -Wl,--major-image-version,0,--minor-image-version,0 

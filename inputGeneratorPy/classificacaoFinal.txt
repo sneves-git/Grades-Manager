@@ -1,0 +1,220 @@
+  AC      Adelino Pereira    5
+  AC           Andre Figo   13
+  AC       Duarte Meneses    8
+  AC         Joana Simoes   15
+  AC           Joao Artur   15
+  AC       Paulo Cortesao    7
+  AC      Samuel Carinhas   14
+  AC      Tatiana Almeida   12
+  AC          Ze Teixeira   15
+
+ AED     Alexy de Almeida    7
+ AED           Eva Filipe   12
+ AED         Filipe Viana   17
+ AED           Joao Artur    6
+ AED            Jonas Rua   10
+ AED       Paulo Cortesao   13
+ AED          Paulo Rocha   17
+ AED          Pedro Faria    8
+ AED        Rui Casaleiro   11
+ AED      Samuel Carinhas    9
+ AED        Sofia Botelho    8
+ AED          Ze Teixeira    9
+
+ALGA     Alexy de Almeida    9
+ALGA           Eva Filipe    0
+ALGA         Filipe Viana   13
+ALGA         Joana Simoes   12
+ALGA       Paulo Cortesao   14
+ALGA          Paulo Rocha    6
+ALGA          Pedro Faria    4
+ALGA      Samuel Carinhas    8
+ALGA          Sofia Neves   13
+ALGA      Tatiana Almeida   13
+
+ AMI      Adelino Pereira    2
+ AMI   Bernardo Arzileiro   18
+ AMI         Filipe Viana    2
+ AMI         Joana Simoes   11
+ AMI            Jonas Rua    6
+ AMI          Paulo Rocha    5
+ AMI          Sofia Neves   10
+
+AMII            Ana Silva    4
+AMII   Bernardo Arzileiro    9
+AMII       Duarte Meneses   14
+AMII          Paulo Rocha    9
+AMII          Pedro Faria    4
+AMII        Rui Casaleiro   13
+AMII        Sofia Botelho    8
+AMII          Ze Teixeira   12
+
+ ATD     Alexy de Almeida   13
+ ATD            Ana Silva    8
+ ATD   Bernardo Arzileiro    4
+ ATD       Duarte Meneses   12
+ ATD           Eva Filipe    9
+ ATD         Filipe Viana   11
+ ATD            Jonas Rua   14
+ ATD          Paulo Rocha    8
+ ATD          Sofia Neves    6
+
+  ED      Adelino Pereira    9
+  ED           Andre Figo    4
+  ED       Duarte Meneses    7
+  ED         Filipe Viana   13
+  ED           Joao Artur   11
+  ED            Jonas Rua    8
+  ED          Paulo Rocha    9
+  ED          Pedro Faria   12
+  ED          Sofia Neves    8
+  ED      Tatiana Almeida   13
+  ED          Ze Teixeira    8
+
+ESTA            Ana Silva    4
+ESTA           Andre Figo    6
+ESTA         Joana Simoes   16
+ESTA           Joao Artur    2
+ESTA          Pedro Faria    2
+ESTA        Rui Casaleiro    7
+ESTA          Sofia Neves   16
+ESTA      Tatiana Almeida   12
+
+IPRP     Alexy de Almeida    1
+IPRP       Duarte Meneses   16
+IPRP           Eva Filipe   16
+IPRP         Filipe Viana    4
+IPRP         Joana Simoes   13
+IPRP        Rui Casaleiro   12
+IPRP        Sofia Botelho   13
+IPRP      Tatiana Almeida   14
+IPRP          Ze Teixeira    3
+
+ IRC      Adelino Pereira   10
+ IRC     Alexy de Almeida   16
+ IRC           Andre Figo   15
+ IRC           Eva Filipe   11
+ IRC         Filipe Viana   14
+ IRC            Jonas Rua    6
+ IRC       Paulo Cortesao   15
+ IRC      Samuel Carinhas    5
+ IRC        Sofia Botelho    7
+ IRC          Ze Teixeira    9
+
+MULT      Adelino Pereira   11
+MULT            Ana Silva   13
+MULT   Bernardo Arzileiro    2
+MULT         Joana Simoes    7
+MULT           Joao Artur    4
+MULT       Paulo Cortesao   10
+MULT          Paulo Rocha    3
+MULT          Sofia Neves    8
+MULT      Tatiana Almeida   11
+
+  PC      Adelino Pereira    6
+  PC     Alexy de Almeida   11
+  PC           Andre Figo   17
+  PC   Bernardo Arzileiro   17
+  PC       Duarte Meneses    8
+  PC         Filipe Viana    8
+  PC         Joana Simoes   11
+  PC       Paulo Cortesao    9
+  PC      Samuel Carinhas   10
+  PC      Tatiana Almeida    9
+
+ POO      Adelino Pereira    8
+ POO            Ana Silva   14
+ POO       Duarte Meneses    8
+ POO           Eva Filipe   11
+ POO         Joana Simoes    6
+ POO           Joao Artur   15
+ POO       Paulo Cortesao   10
+ POO          Pedro Faria    7
+ POO        Rui Casaleiro   14
+ POO      Samuel Carinhas    6
+ POO        Sofia Botelho   12
+ POO          Sofia Neves    9
+ POO      Tatiana Almeida   10
+ POO          Ze Teixeira    9
+
+ PPP      Adelino Pereira    1
+ PPP     Alexy de Almeida    7
+ PPP            Ana Silva    7
+ PPP           Andre Figo    5
+ PPP   Bernardo Arzileiro    8
+ PPP           Joao Artur   10
+ PPP            Jonas Rua   10
+ PPP       Paulo Cortesao    9
+ PPP          Paulo Rocha   10
+ PPP          Pedro Faria    5
+ PPP        Rui Casaleiro   14
+ PPP      Samuel Carinhas   13
+ PPP        Sofia Botelho   20
+ PPP          Ze Teixeira    6
+
+ SCC           Andre Figo    2
+ SCC   Bernardo Arzileiro   12
+ SCC           Eva Filipe   16
+ SCC           Joao Artur    5
+ SCC            Jonas Rua    8
+ SCC          Pedro Faria   17
+ SCC        Rui Casaleiro   15
+ SCC        Sofia Botelho   12
+ SCC          Sofia Neves    5
+ SCC      Tatiana Almeida    8
+ SCC          Ze Teixeira   12
+
+  SO            Ana Silva   11
+  SO           Andre Figo    9
+  SO   Bernardo Arzileiro   11
+  SO       Duarte Meneses   15
+  SO           Eva Filipe    8
+  SO         Joana Simoes   10
+  SO           Joao Artur   10
+  SO            Jonas Rua   15
+  SO       Paulo Cortesao   10
+  SO        Rui Casaleiro   14
+  SO      Samuel Carinhas   10
+  SO          Ze Teixeira    4
+
+  TC      Adelino Pereira    8
+  TC     Alexy de Almeida   14
+  TC            Ana Silva   16
+  TC       Duarte Meneses   13
+  TC           Eva Filipe    4
+  TC          Pedro Faria   15
+  TC        Rui Casaleiro    7
+  TC      Samuel Carinhas    6
+  TC      Tatiana Almeida   14
+
+ TFM        Sofia Botelho    9
+ TFM          Sofia Neves    8
+
+  TI     Alexy de Almeida   10
+  TI            Ana Silva   13
+  TI           Andre Figo   17
+  TI   Bernardo Arzileiro   11
+  TI           Eva Filipe    4
+  TI         Filipe Viana    4
+  TI         Joana Simoes    6
+  TI           Joao Artur   13
+  TI            Jonas Rua   10
+  TI       Paulo Cortesao    9
+  TI          Paulo Rocha   14
+  TI        Sofia Botelho   10
+  TI          Sofia Neves    5
+
+TeoC      Adelino Pereira    9
+TeoC     Alexy de Almeida   17
+TeoC            Ana Silva   10
+TeoC           Andre Figo    8
+TeoC   Bernardo Arzileiro   11
+TeoC       Duarte Meneses    3
+TeoC         Filipe Viana   15
+TeoC            Jonas Rua    5
+TeoC          Paulo Rocha    2
+TeoC          Pedro Faria   10
+TeoC        Rui Casaleiro    8
+TeoC      Samuel Carinhas   11
+TeoC        Sofia Botelho   14
+

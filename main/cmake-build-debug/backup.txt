@@ -1,0 +1,600 @@
+//
+// Created by sofia
+//
+#include "main.h"
+
+
+struct studentNameNumber {
+    char studentName[MAXWORDSIZE];
+    unsigned long int studentNumber;
+    struct studentNameNumber* next;
+};
+
+struct elemInQueue {
+    char name[MAXWORDSIZE];
+    unsigned long int studentNumber;
+    char schoolSubject[MAXWORDSIZE];
+    float test1;
+    float test2;
+    float mean;
+    struct elemInQueue* next;
+};
+
+static struct studentNameNumber* nameNumberHead = NULL;
+static struct studentNameNumber* nameNumberNode;
+static struct elemInQueue* head = NULL;
+static struct elemInQueue* node;
+
+
+int circularListTwoPriorities(struct elemInQueue *);
+void printList();
+int get_one_line(FILE *, char *, int);
+
+int printError(char* error, int lineNumber){
+    char lineError[MAXLINESIZE*2] = "";
+
+    if( strcmp(error, "") != 0 ){
+        sprintf(lineError, "Error in line %d. ", lineNumber);
+        strcat(lineError, error);
+        printf("%s\n", lineError);
+        return 1;
+    }
+
+    return 0;
+}
+
+
+FILE * saveTxtFileName(FILE *txtFile, char *fileName){
+    char temp[MAXLINESIZE] = "";
+    char line[MAXLINESIZE] = "";
+
+    printf("fileName1: %s\n", fileName);
+
+    while (txtFile == NULL){
+        printf("\nName of data file: ");
+        if(get_one_line(stdin, fileName, MAXWORDSIZE) == EOF){
+            printf("Ending program... You pressed EOF.");
+            exit(-1);
+        }
+        printf("fileName2: %s\n", temp);
+
+        txtFile = fopen(fileName, "r");
+        if(txtFile == NULL){
+            printf("File does not exist.\n");
+        }
+    }
+    printf("fileName3: %s\n", temp);
+
+    printf("\nData:\n\t");
+    while(get_one_line(txtFile, line, MAXLINESIZE) != EOF){
+        printf("%s\n\t", line);
+    }
+    printf("\n");
+    printf("fileName4: %s\n", temp);
+
+    //strcpy(fileName, temp);
+    printf("fileName5: %s\n", fileName);
+
+    return txtFile;
+}
+
+
+void readTxtNameNumber(char* txtFileName) {
+    int lineNumber = 0;
+    char error[MAXLINESIZE] = "";
+    const char separator[2] = "::";
+    char fileLine[MAXLINESIZE] = "";
+    printf("fileName: %s\n", txtFileName);
+    FILE *txtFile = fopen(txtFileName, "r");
+
+    if (txtFile == NULL) {
+        printf("Error. There is no text file with that name.");
+    }else {
+        while (get_one_line(txtFile, fileLine, MAXLINESIZE)) {
+            if (feof(txtFile) == 1) {
+                break;
+            }
+
+            printf("\n--------------------------------\nFile line: %s\n", fileLine);
+
+
+            char *token = NULL;
+            struct studentNameNumber* currentElem, *nextElem;
+            printf("TOKEN: %s\n", token);
+
+
+            /*
+            size_t len = strlen(fileLine);
+            for(int i = 0; i < strlen(fileLine); i++){
+                if (len > 0 && fileLine[len-1] == '\n') {
+                    fileLine[i] = '\0';
+                }
+            }
+            */
+
+            lineNumber++;
+
+
+            nameNumberNode = (struct studentNameNumber*) calloc(1, sizeof(struct studentNameNumber));
+
+            token = strtok(fileLine, separator);
+            strcpy(error, checkName(token, error));
+            if(printError(error, lineNumber) == 1){
+                free(nameNumberNode);
+                while(token = strtok(NULL, separator));
+                printf("AQUI");
+                continue;
+            }else{
+                printf("me ");
+                strcpy(nameNumberNode -> studentName, token);
+                printf("studentName = %s\t", nameNumberNode -> studentName);
+            }
+
+
+            while(token!=NULL){
+                token = strtok(NULL, separator);
+                printf("student Number: %s\n", token);
+                strcpy(error, checkStudentNumber(token, error));
+                if(printError(error, lineNumber) == 1){
+                    free(nameNumberNode);
+                    while(token = strtok(NULL, separator));
+                    continue;
+                }else{
+                    nameNumberNode -> studentNumber = strtoul(token, NULL, 10);
+                    printf("studentNumber = %lu\n", nameNumberNode -> studentNumber);
+                }
+
+                break;
+            }
+
+            if(nameNumberHead == NULL){
+                nameNumberHead = nameNumberNode;
+            }else{
+                currentElem = nameNumberHead;
+                nextElem = nameNumberHead -> next;
+                while(nextElem != NULL){
+                    currentElem = nextElem;
+                    nextElem = nextElem -> next;
+                }
+                currentElem -> next = nameNumberNode;
+                nameNumberNode -> next = NULL;
+            }
+
+        }
+    }
+    fclose(txtFile);
+}
+
+void printNamesList(struct studentNameNumber* node){
+    struct studentNameNumber* nextElem;
+    nextElem = nameNumberHead -> next;
+    printf("----Nome: %20s Numero: %lu\n", nameNumberHead -> studentName, nameNumberHead -> studentNumber);
+    while(nextElem != NULL){
+        printf("----Nome: %20s Numero: %lu\n", nextElem -> studentName, nextElem -> studentNumber);
+        nextElem = nextElem -> next;
+    }
+}
+
+
+char* searchName(unsigned long int classificationsNumber){
+    unsigned long int number;
+    struct studentNameNumber* currentElem, *nextElem;
+
+    //Checks the first name
+    currentElem = nameNumberHead;
+    nextElem = nameNumberHead -> next;
+    number = nameNumberHead -> studentNumber;  //Student Number from Name&Number file
+    if(number == classificationsNumber){
+        return (currentElem -> studentName);
+    }
+
+    //Checks the rest of the names
+    while(nextElem != NULL){
+        //If the student number from the Name&Number file is equal to the classifications file
+        //number then we insert it in the node
+        number = nextElem -> studentNumber;
+        currentElem = nextElem;
+        nextElem = nextElem -> next;
+        if(number == classificationsNumber){
+            return (currentElem -> studentName);
+        }
+    }
+    return "";
+}
+
+int readTxtClassifications(char *txtFileName) {
+    int lineNumber = 0;
+    char error[MAXLINESIZE] = "";
+    const char separator[2] = "::";
+    char fileLine[MAXLINESIZE] = "";
+    FILE *txtFile = fopen(txtFileName, "r");
+
+    if (txtFile == NULL) {
+        printf("Error. There is no text file with that name.");
+    } else {
+        //Reads the file, which contains the classifications of the students, line by line
+        while (get_one_line(txtFile, fileLine, MAXLINESIZE)) {  //fread(fileLine, sizeof(char), MAXLINESIZE, txtFile) -> binario
+            //Checks if it has reached the EOF, if so then it stops
+            if (feof(txtFile) == 1) {
+                break;
+            }
+
+
+            char *token = NULL;
+            char name[MAXWORDSIZE] = "";
+            int tokenCounter = 0, flag = 0;
+            unsigned long int studentNumber = 0;
+            float test1 = 0, test2 = 0, summation = 0;
+
+
+            printf("-------------------------\n");
+            printf("linha: %s\n", fileLine);
+
+            lineNumber++;
+
+            token = strtok(fileLine, separator); //Student number
+            strcpy(error, checkStudentNumber(token, error));
+            if (printError(error, lineNumber) == 1) {
+                continue;
+            } else {
+                studentNumber = strtoul(token, NULL, 10);
+            }
+
+            tokenCounter++;
+            while ((token = strtok(NULL, separator)) != NULL) {  //Discipline
+                tokenCounter++;
+                if (tokenCounter == 2) {
+                    break;
+                }
+            }
+            strcpy(error, checkName(token, error));
+            if (printError(error, lineNumber) == 1) {
+                continue;
+            }
+
+
+            struct elemInQueue *nextElem;
+            if (head != NULL) {
+                //Runs through the list to see if that student's number has already been written
+                //therefore meaning that the first test has been written and we need to write the 2nd
+                unsigned long int number = head->studentNumber;
+                char *subject = head->schoolSubject;
+                nextElem = head;
+
+
+                //Checks the first node
+                if (number == studentNumber && strcasecmp(subject, token) == 0) {
+                    //flag - Signals that we found a node that has the same number and discipline
+                    //as the one in the classifications line
+                    flag = 1;
+                }
+
+                //Checks the other nodes
+                nextElem = nextElem->next;
+                number = nextElem->studentNumber;
+                subject = nextElem->schoolSubject;
+                while (nextElem != head) {
+                    if (number == studentNumber && strcasecmp(subject, token) == 0) {
+                        //flag - Signals that we found a node that has the same number and discipline
+                        //as the one in the classifications line
+                        flag = 1;
+                        break;
+                    } else {
+                        nextElem = nextElem->next;
+                        number = nextElem->studentNumber;
+                        subject = nextElem->schoolSubject;
+                    }
+                }
+            }
+
+
+            //We found no number and subject equal to any other in the list so it is created
+            //a new node in which we fill in the parameters name, number, discipline, test1
+            //and then order the name and discipline by alphabetical priority
+            printf("----------------------\n\n");
+            printf("head == NULL: %d\n", head == NULL);
+            printf("----------------------\n\n");
+
+            if (flag == 0 || head == NULL) {
+                printf("\nTESTE1\n");
+                node = (struct elemInQueue *) calloc(1, sizeof(struct elemInQueue));
+                if (node == NULL) {
+                    return 1;
+                }
+
+                node->studentNumber = studentNumber;
+                printf("number: %lu\n", node->studentNumber);
+
+                strcpy(node->schoolSubject, token);
+                printf("subject: %s\n", node->schoolSubject);
+
+                while ((token = strtok(NULL, separator)) != NULL) {
+                    tokenCounter++;
+
+                    if (tokenCounter == 4) {
+                        node->test1 = strtof(token, NULL);
+                        printf("test1: %.2f\n", node->test1);
+                        break;
+                    }
+                }
+                strcpy(error, checkTests(token, error));
+                if (printError(error, lineNumber) == 1) {
+                    free(node);
+                    continue;
+                }
+
+                test1 = node->test1;
+                test2 = node->test2;
+                summation = test1 + test2;
+                node->mean = round(summation / 2);
+
+                strcpy(name, searchName(node->studentNumber));
+                if (strcmp(name, "") != 0) {
+                    //If a name was found, we can insert the node in the circular list and sort its
+                    //name and discipline by alphabetical priority
+                    strcpy(node->name, name);
+                    circularListTwoPriorities(node);
+                } else {
+                    //If there is no name associated to the student number it frees the memory of the
+                    //node because it serves no purpose for the program
+                    free(node);
+                }
+            }
+
+                //There is a number and subject equal to another one in the list so we use the same node
+                //to fill in the parameters test2 and mean that were left to be filled
+            else if (flag == 1) {
+                printf("\nTESTE2\n");
+                while ((token = strtok(NULL, separator)) != NULL) {
+                    tokenCounter++;
+                    if (tokenCounter == 4) {
+                        nextElem->test2 = strtof(token, NULL);
+                        printf("test2: %.2f\n\n", nextElem->test2);
+                        break;
+                    }
+                }
+                strcpy(error, checkTests(token, error));
+                if (printError(error, lineNumber) == 1) {
+                    free(nextElem);
+                    continue;
+                }
+
+                test1 = nextElem->test1;
+                test2 = nextElem->test2;
+                summation = test1 + test2;
+                nextElem->mean = round(summation / 2);
+            }
+        }
+    }
+    fclose(txtFile);
+}
+
+
+void printList(){
+    struct elemInQueue * nextElem;
+    nextElem = head -> next;
+    printf("----Nome:%20s\tDisciplina:%s\tNum:%lu\tProva1:%.2f\tProva2:%.2f\tmean:%.2f\n", head -> name, head -> schoolSubject, head->studentNumber,
+            head->test1, head->test2, head->mean);
+    while(nextElem != head){
+        printf("----Nome:%20s\tDisciplina:%s\tNum:%lu\tProva1:%.2f\tProva2:%.2f\tmean:%.2f\n", nextElem -> name, nextElem -> schoolSubject, nextElem->studentNumber,
+                nextElem->test1, nextElem-> test2, nextElem->mean);
+        nextElem = nextElem -> next;
+    }
+}
+
+
+
+void createBinary(char* binaryName, FILE* fileBinaryStruct, struct elemInQueue* head){
+    struct elemInQueue* nextElem, *input;
+
+    fileBinaryStruct = fopen(binaryName, "wb");
+
+    fwrite(&head, sizeof(struct elemInQueue), 1, fileBinaryStruct);
+
+    nextElem = head -> next;
+    while(nextElem != head){
+        fwrite(&nextElem, sizeof(struct elemInQueue), 1, fileBinaryStruct);
+        nextElem = nextElem -> next;
+    }
+    fclose(fileBinaryStruct);
+}
+
+
+
+char* innit(){
+    int choice = 0, previousChoice = 0;
+    char nameNumberName[MAXWORDSIZE] = "";
+    char classificationsName[MAXWORDSIZE] = "";
+    static char binaryName[MAXWORDSIZE] = "binaryWithStructure.bin";
+    FILE* fileTxtNameNumber = NULL;
+    FILE* fileTxtClassifications = NULL;
+    FILE* fileBinaryStruct = NULL;
+
+
+    printf("Please choose the name of the data file that you want to introduce first: \n\t"
+           "1 - Student's names and numbers\n\t"
+           "2 - Student's classifications\n\t"
+           "Choice: ");
+    while(1){
+        choice = 0;
+        if(scanf("%d", &choice) != 1){
+            printf("\nWrong choice. Please select the number 1 or 2.\n");  //invalid choice
+        }
+        while (getchar() != '\n');  //clean rest of the line
+
+        //Checks whether or not user chose to insert the name of the student's names and number file, if the classifications
+        //binary file hasn't been written yet and if this option has not been completed before
+        if(choice == 1 && fileTxtClassifications == NULL && previousChoice != 1){
+            previousChoice = choice;
+            fileTxtNameNumber = saveTxtFileName(fileTxtNameNumber, nameNumberName);
+        }
+        //Checks if option 1 was selected and if the previous choice wasn't the same
+        else if(choice == 1 && previousChoice != 1){
+            saveTxtFileName(fileTxtNameNumber, nameNumberName);
+            break;
+        }
+
+        //Checks whether or not user chose to insert the name of the classifications file, if the names
+        //and numbers binary file hasn't been written yet and if this option has not been completed before
+        if(choice == 2 && fileTxtNameNumber == NULL && previousChoice != 2){
+            previousChoice = choice;
+            fileTxtClassifications = saveTxtFileName(fileTxtClassifications, classificationsName);
+
+        }else if(choice == 2 && previousChoice != 2){
+            saveTxtFileName(fileTxtClassifications, classificationsName);
+            break;
+        }
+
+        //Advises the user as to what files have already been written and what not so he knows what
+        //to choose
+        if(previousChoice == 1){
+            printf("\n1 - Student's names and numbers (✓)\n"
+                   "2 - Student's classifications\n"
+                   "Choice: ");
+        }else if(previousChoice == 2){
+            printf("\n1 - Student's names and numbers\n"
+                   "2 - Student's classifications (✓)\n"
+                   "Choice: ");
+        }else{
+            printf("\n1 - Student's names and numbers\n"
+                   "2 - Student's classifications\n"
+                   "Choice: ");
+        }
+    }
+
+    printf("AQUI\n");
+    printf("fileName7: %s\n", nameNumberName);
+    readTxtNameNumber(nameNumberName);
+
+    printf("AQUI1\n");
+    printNamesList(nameNumberHead);
+    printf("fileName8: %s\n", classificationsName);
+
+    readTxtClassifications(classificationsName);
+    printList();
+    createBinary(binaryName, fileBinaryStruct, head);
+    //readBinaryFile("binaryNameNumber.bin");
+
+    printf("---------------------------\n-------------------------\n");
+
+    return binaryName;
+}
+
+
+
+
+// Árvore binária genérica com acesso a ficheiros - João Gabriel Silva 2020-04-26
+
+/* get next line from input - "lim" includes the terminating zero */
+int get_one_line(FILE * fich, char *linha, int lim) {
+    int c, i;
+    i = 0;
+    while (isspace(c = fgetc(fich)));
+    if (c != EOF) {
+        if (!iscntrl(c)) linha[i++] = c;
+    } else
+        return c;
+
+    for (; i < lim - 1;) {
+        c = fgetc(fich);
+        if (c == EOF)
+            return c;
+        if (c == '\n')
+            break;
+        if (!iscntrl(c)) linha[i++] = c;
+    }
+    linha[i] = 0;
+    while ((c != EOF) && (c != '\n'))
+        c = fgetc(fich);
+    return c;
+}
+
+//Circular list with two priorities (name and discipline)
+int circularListTwoPriorities(struct elemInQueue * newNode){
+    int disciplineResult = 0, nameResult = 0;
+    struct elemInQueue * nextElem, *currentElem;
+
+    printf("\nINSERT\n");
+    //If it is the first element of the list it starts off as the head
+    if(head == NULL){
+        printf("PRIMEIRA\n");
+        head = newNode;
+        newNode -> next = head;
+    }else{
+        //Inserts node at the beginning of the list
+        if(strcasecmp(head -> schoolSubject, newNode -> schoolSubject) > 0){
+            newNode -> next = head;
+
+            //If there is only one element on the list we connect the previous head to the new head
+            //directly
+            if(head -> next == head){
+                head -> next = newNode;
+            }
+                //If there is more than one element on the list we need to connect the last element to
+                //the new head, therefore, we search for it
+            else{
+                currentElem = head;
+                nextElem = head->next;
+                while(nextElem != head){
+                    currentElem = nextElem;
+                    nextElem = nextElem -> next;
+                }
+                currentElem -> next = newNode;
+            }
+
+            head = newNode;
+        }else if(strcasecmp(head -> schoolSubject, newNode -> schoolSubject) == 0
+                 && strcasecmp(head -> name, newNode -> name) > 0){
+
+            newNode -> next = head;
+
+            //If there is only one element on the list we connect the previous head to the new head
+            //directly
+            if(head -> next == head){
+                head -> next = newNode;
+            }
+                //If there is more than one element on the list we need to connect the last element to
+                //the new head, therefore, we search for it
+            else{
+                currentElem = head;
+                nextElem = head->next;
+                while(nextElem != head){
+                    currentElem = nextElem;
+                    nextElem = nextElem -> next;
+                }
+                currentElem -> next = newNode;
+            }
+
+            head = newNode;
+
+        }else{
+            currentElem = head;
+            nextElem = head->next;
+            while((disciplineResult = strcasecmp(nextElem -> schoolSubject, newNode -> schoolSubject)) < 0
+                  && nextElem != head) {
+                currentElem = nextElem;
+                nextElem = nextElem->next;
+            }
+            while((disciplineResult = strcasecmp(nextElem -> schoolSubject, newNode -> schoolSubject)) == 0
+                  && (nameResult = strcasecmp(nextElem -> name, newNode -> name)) < 0
+                  && nextElem != head){
+                currentElem = nextElem;
+                nextElem = nextElem->next;
+            }
+
+            if(nextElem->next == head && disciplineResult < 0 && nameResult < 0){
+                printf("FIM LISTA\n");
+                //Insert at end of list
+                currentElem -> next = newNode;
+                newNode -> next = head;
+            }else{
+                printf("MEIO LISTA\n");
+                //Insert in the middle of the list
+                newNode -> next = currentElem -> next ;
+                currentElem -> next = newNode;
+            }
+        }
+    }
+
+    return 0;
+}

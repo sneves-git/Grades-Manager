@@ -1,0 +1,1 @@
+/usr/bin/cc -Wall -Wextra -g  -Wl,--enable-auto-import CMakeFiles/binaryFile.dir/main.c.o CMakeFiles/binaryFile.dir/circularListTwoPriorities.c.o CMakeFiles/binaryFile.dir/verificationFunctions.c.o  -o binaryFile.exe -Wl,--out-implib,libbinaryFile.dll.a -Wl,--major-image-version,0,--minor-image-version,0 

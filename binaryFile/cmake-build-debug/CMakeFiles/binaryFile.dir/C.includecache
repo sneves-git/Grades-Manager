@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/cygdrive/g/Documents/DEI/1oAno/2oSemestre/Projeto PPP/binaryFile/circularListTwoPriorities.c
+main.h
+/cygdrive/g/Documents/DEI/1oAno/2oSemestre/Projeto PPP/binaryFile/main.h
+
+/cygdrive/g/Documents/DEI/1oAno/2oSemestre/Projeto PPP/binaryFile/main.h
+stdio.h
+-
+stdlib.h
+-
+ctype.h
+-
+string.h
+-
+errno.h
+-
+math.h
+-
+
